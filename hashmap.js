@@ -2,10 +2,11 @@ export class HashMap {
 	constructor() {
 		this.capacity = 16;
 		this.loadFactor = 0.75;
-		this.buckets = new Array(this.capacity).fill(null)
+		this.buckets = [];
+		this.size = 0;
 	}
 
-	// takes a key and produces a hash code with it
+	// takes a key and produces a hash (bucket index) with it
 	hash(key) {
 		let hashCode = 0
 		const primeNumber = 31
@@ -15,6 +16,11 @@ export class HashMap {
 		}
 
 		return hashCode;
+	}
+
+	// returns true or false for if we should resize the buckets array
+	resize() {
+		return this.capacity*this.loadFactor > this.size;
 	}
 
 	// 

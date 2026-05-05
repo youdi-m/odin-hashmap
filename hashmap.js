@@ -1,3 +1,6 @@
+import { LinkedList } from "./linkedList.js";
+import { Node } from "./linkedList.js";
+
 export class HashMap {
 	constructor() {
 		this.capacity = 16;
@@ -27,6 +30,8 @@ export class HashMap {
 	// 
 	set(key, value) {
 
+		let index = hash(key);
+		let newNode = new Node(key, value);
 	}
 
 	// return value assigned to key, return null if no key found

@@ -15,6 +15,7 @@ export class HashMap {
 			hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
 		}
 
+		console.log(key + ' : ' + hashCode)
 		return hashCode;
 	}
 

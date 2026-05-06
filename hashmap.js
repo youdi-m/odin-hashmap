@@ -123,10 +123,12 @@ export class HashMap {
 	keys() {
 		let arr = [];
 
+		// loop through buckets
 		for (let i = 0; i < this.capacity; i++) {
+			// if the bucket has a linkedList loop through and append the key to arr
 			if(this.buckets[i] instanceof LinkedList) {
 				for (let j = 0; j < this.buckets[i].listSize; j++) {
-					arr.push(this.buckets[i].keyAt(this.buckets[j].findIndex(key)));
+					arr.push(this.buckets[i].keyAt(j));
 				}
 			}
 		}
@@ -138,10 +140,12 @@ export class HashMap {
 	values() {
 		let arr = [];
 
+		// loop through buckets
 		for (let i = 0; i < this.capacity; i++) {
+			// if the bucket has a linkedList loop through and append the value to arr
 			if(this.buckets[i] instanceof LinkedList) {
 				for (let j = 0; j < this.buckets[i].listSize; j++) {
-					arr.push(this.buckets[i].valueAt(this.buckets[j].findIndex(key)));
+					arr.push(this.buckets[i].valueAt(j));
 				}
 			}
 		}
@@ -151,6 +155,18 @@ export class HashMap {
 
 	// returns an array containing each key, value pair
 	entries() {
+		let arr = [];
 
+		// loop through buckets
+		for (let i = 0; i < this.capacity; i++) {
+			// if the bucket has a linkedList loop through and append the value to arr
+			if(this.buckets[i] instanceof LinkedList) {
+				for (let j = 0; j < this.buckets[i].listSize; j++) {
+					arr.push([this.buckets[i].keyAt(j), this.buckets[i].valueAt(j)]);
+				}
+			}
+		}
+
+		return arr;
 	}
 }

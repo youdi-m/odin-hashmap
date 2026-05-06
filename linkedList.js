@@ -41,47 +41,32 @@ export class LinkedList {
 		this.listSize++;
 	}
 
-	// append a new node to the beginning of the list
-	prepend(key, value) {
-
-		// create new node
-		let newNode = new Node(key, value);
-		newNode.next = this.listHead;
-
-		// set new node as head
-		this.listHead = newNode;
-
-		// set new node as tail if list is empty
-		if(this.listSize == 0) {
-			this.listTail = newNode;
-		}
-
-		// increase list size
-		this.listSize++
-	}
-
 	// return the number of nodes in the list
 	// we use an int for size to keep this function O(1)
 	size() {
 		return this.listSize;
 	}
 
-	// return value of first node in the list
-	head() {
+	// returns true if the passed in key is in the list and otherwise returns false.
+	contains(key) {
 		if (this.checkEmpty()) return undefined;
 
-		return this.listHead;
-	}
+		// copy head to currentNode
+		let currentNode = this.listHead;
 
-	// return value of last node in the list
-	tail() {
-		if (this.checkEmpty()) return undefined;
+		// step through each node and compare values
+		// return true if values match
+		for(let i = 0; i < this.listSize; i++) {
+			if (currentNode.key == key) return true;
+			currentNode = currentNode.next;
+		}
 
-		return this.listTail;
+		// return false if no values matched
+		return false;
 	}
 
 	// return the value of the node at the given index
-	at(index) {
+	valueAt(index) {
 		if (this.checkEmpty()) return undefined;
 
 		// copy list head to new node
@@ -93,45 +78,28 @@ export class LinkedList {
 		}
 		
 		// return value at that index
-		return [currentNode.key, currentNode.value];
+		return currentNode.value;
 	}
 
-	// remove the head node from the list and return its value
-	pop() {
-		// get the current head
-		let oldHead = this.listHead;
-
-		// move head to next node
-		this.listHead = this.listHead.next;
-
-		// decrease list size
-		this.listSize--;
-
-		// return old head value
-		return [oldHead.key, oldHead.value];
-	}
-
-	// returns true if the passed in value is in the list and otherwise returns false.
-	contains(key, value) {
+	// return the value of the node at the given index
+	keyAt(index) {
 		if (this.checkEmpty()) return undefined;
 
-		// copy head to currentNode
+		// copy list head to new node
 		let currentNode = this.listHead;
-
-		// step through each node and compare values
-		// return true if values match
-		for(let i = 0; i < this.listSize; i++) {
-			if (currentNode.key == key && currentNode.value == value) return true;
+		
+		// step up until we get to requestde index
+		for(let i = 0; i < index; i++) {
 			currentNode = currentNode.next;
 		}
-
-		// return false if no values matched
-		return false;
+		
+		// return value at that index
+		return currentNode.key;
 	}
 
 	// returns the index of the node containing the given value. If the value can’t be found in the list, it should return -1.
 	// If more than one node has a value matching the given value, it should return the index of the first node with the matching value.
-	findIndex(key, value) {
+	findIndex(key) {
 		if (this.checkEmpty()) return undefined;
 
 		// copy head to currentNode
@@ -140,7 +108,7 @@ export class LinkedList {
 		// step through each node and compare values
 		// return i (index) if values match
 		for(let i = 0; i < this.listSize; i++) {
-			if (currentNode.key == key && currentNode.value == value) return i;
+			if (currentNode.key == key) return i;
 			currentNode = currentNode.next;
 		}
 
@@ -148,8 +116,8 @@ export class LinkedList {
 		return -1
 	}
 
-	// represents your LinkedList objects as strings, so you can print them out and preview them in the console.
-	// If the list is empty, it should return an empty string. The format should be: ( value ) -> ( value ) -> ( value ) -> null.
+	// print LinkedList as a string, if empty, return an empty string
+	// format: (key : value) -> (key : value) -> (key : value) -> null
 	toString() {
 		if (this.checkEmpty()) return '';
 
@@ -158,7 +126,7 @@ export class LinkedList {
 
 		// step through list and print value on same line
 		for(let i = 0; i < this.listSize; i++) {
-			process.stdout.write([currentNode.key, currentNode.value] + ' -> ');
+			process.stdout.write(`(${currentNode.key} : ${currentNode.value}) -> `);
 			currentNode = currentNode.next;
 		}
 
@@ -169,9 +137,9 @@ export class LinkedList {
 		console.log()
 	}
 
-
 	// removes the node at the given index. If the given index is out of bounds throw a RangeError
 	removeAt(index) {
+
 		if(index > this.listSize || index < 0) throw new RangeError('Index out of range')
 
 		let currentNode = this.listHead;
@@ -180,6 +148,24 @@ export class LinkedList {
 			if (i == index-1) {
 				currentNode.next = currentNode.next.next;
 				this.listSize--;
+			}
+			else {
+				currentNode = currentNode.next;
+			}
+		}
+	}
+
+	// update the value of the node at the given list index
+	updateValue(index, value) {
+
+		if(index > this.listSize || index < 0) throw new RangeError('Index out of range')
+
+		let currentNode = this.listHead;
+
+		for(let i = 0; i <= index; i++) {
+
+			if (i == index) {
+				currentNode.value = value;
 			}
 			else {
 				currentNode = currentNode.next;
